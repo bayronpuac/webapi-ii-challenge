@@ -2,6 +2,8 @@ const express = require('express');
 const db = require('../data/db');
 const router = express.Router();
 
+
+//GET
 router.get('/', (req, res) => {
   
     db.find(req.query)
@@ -16,7 +18,7 @@ router.get('/', (req, res) => {
         });
       });
   });
-
+//GET BY ID
   router.get('/:id', (req, res) => {
     db.findById(req.params.id)
       .then(posts => {
@@ -35,7 +37,7 @@ router.get('/', (req, res) => {
       });
   });
 
-
+//GET BY ID AND COMMENTS
   router.get('/:id/comments', (req, res) => {
     db.findPostComments(req.params.id)
       .then(comments => {
@@ -54,6 +56,7 @@ router.get('/', (req, res) => {
       });
   });
 
+  //POST 
 router.post('/', (req, res) => {
     const postInfo = req.body;
     if( !postInfo.title || !postInfo.contents){
@@ -73,7 +76,7 @@ router.post('/', (req, res) => {
          });
     }
 });
-
+//POST BY ID AND COMMENTS
 router.post('/:id/comments', async(req,res) => {
     const comtext = req.body.text;
     const id = req.params.id;
@@ -91,7 +94,7 @@ router.post('/:id/comments', async(req,res) => {
          res.status(500).json({error: "There was an error while saving the comment to the database."})
        }
     });
-
+//DELETE
   router.delete("/:id", (req, res) => {
     db
       .remove(req.params.id)
@@ -111,6 +114,7 @@ router.post('/:id/comments', async(req,res) => {
       });
   });
 
+//PUT WITH ID
   router.put("/:id", (req, res) => {
     if (!req.body.title || !req.body.contents) {
       res.status(400).json({
